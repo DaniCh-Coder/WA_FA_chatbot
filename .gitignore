@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Entorno virtual de Python
+.env
+venv/
+
+# Archivos de configuración del editor
+.vscode/

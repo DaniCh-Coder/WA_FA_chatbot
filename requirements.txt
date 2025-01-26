@@ -1,0 +1,10 @@
+# libraries required for the project
+fastapi[all]
+httpx
+pydantic
+pydantic-settings
+python-dotenv
+uvicorn
+loguru               # Usado para logging
+pyngrok              # Necesario si usas ngrok en tu proyecto
+ujson                # Usado para JSON de alto rendimiento
