@@ -16,7 +16,6 @@ Construye una clase con todas las variables de entorno necesarias y valida su de
 """
 from pydantic_settings import BaseSettings   
 from pydantic import Field, ValidationError
-from functools import lru_cache
 from typing import Optional
 
 class Settings(BaseSettings):

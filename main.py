@@ -10,7 +10,7 @@ main: Se encarga de arrancar inicializar y comenzar la aplicación:
 from fastapi import FastAPI
 # from app.scripts.path_check import add_project_root_to_path
 from app.utils.fa_utils import configure_logging
-from app.utils.ngrok_utils import start_ngrok, start_uvicorn
+from app.utils.ngrok_utils import start_ngrok
 from app.routes.webhook_routes import router as webhook_router
 # from app.exceptions.exeptions_setup import exception_handlers_setup
 from app.config_setup.config_settings import get_settings
@@ -78,7 +78,7 @@ if __name__ == "__main__":
         if not settings.UVICORN_APP:
             logger.critical("La configuración de UVICORN_APP no está definida.")
         logger.info("Iniciando el servidor FastAPI con Uvicorn...")
-        uvicorn.run("main:app", port=5000, log_level="debug")
+        uvicorn.run("main:app", port=5000)
         logger.info("uvicorn.run se ha ejecutado y finalizado correctamente.")
     except Exception as e:
         logger.critical(f"Error crítico al iniciar el servidor FastAPI: {e}")

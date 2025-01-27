@@ -14,13 +14,6 @@ router = APIRouter()
 whatsapp_service = WhatsAppService()
 settings = get_settings()
 
-MENU_BUTTONS = [
-    {"type": "reply", "reply": {"id": "pileta", "title": "Pileta"}},
-    {"type": "reply", "reply": {"id": "tenis", "title": "Tenis"}},
-    {"type": "reply", "reply": {"id": "sum", "title": "SUM"}},
-    {"type": "reply", "reply": {"id": "residuos", "title": "Residuos"}},
-]
-
 @router.get("/", tags=["Home"])
 def read_root():
     """Endpoint para comprobar que el servidor está activo."""

@@ -1,3 +1,4 @@
+# webhook_schema.py
 """
     This module defines the Pydantic models for the webhook payload.
     These models are used to validate and parse the incoming webhook data.
@@ -65,8 +66,8 @@ class Entry(BaseModel):
 
 class WebhookPayload(BaseModel):
     """Payload completo del webhook"""
-    object: str
-    entry: List[Entry]
+    object: str = Field(..., description="Objeto del webhook (generalmente 'whatsapp_business_account')")
+    entry: list[Dict[str, Any]] = Field(..., description="Lista de entradas del webhook")
 
     def validate_payload(self) -> Optional[str]:
         """
@@ -74,24 +75,63 @@ class WebhookPayload(BaseModel):
         Retorna un mensaje de error si hay problemas, o None si es válido.
         """
         if not self.entry:
-            return "El payload está vacío."
-        if not self.entry[0].changes:
-            return "La estructura del payload es inválida."
-        if not self.entry[0].changes[0].value.messages:
-            return "No hay mensajes en el payload."
-        return None
+            raise ValueError("El payload debe contener una lista 'entry'.")
+
+        # Validar contenido de las entradas
+        for entry in self.entry:
+            if 'changes' not in entry or not isinstance(entry['changes'], list):
+                raise ValueError("Cada entrada debe contener una lista 'changes'.")
+            for change in entry['changes']:
+                if not isinstance(change, dict):
+                    raise ValueError("Cada cambio debe ser un diccionario.")
+            if 'value' not in change or not isinstance(change['value'], dict):
+                raise ValueError("Cada cambio debe contener un diccionario 'value'.")
+            if 'messages' in change['value']:
+                if not isinstance(change['value']['messages'], list):
+                    raise ValueError("El campo 'messages' debe ser una lista.")
+                for message in change['value']['messages']:
+                    if not isinstance(message, dict):
+                        raise ValueError("Cada mensaje debe ser un diccionario.")
+        return {"success": True}        
    
+        
+    def get_message_if_exists(self) -> Optional[Message]:
+        """
+        Verifica si el objeto 'value' es un mensaje y lo retorna.
+
+        Returns:
+            Optional[Message]: Un objeto Message si existe, de lo contrario, None.
+        """
+        value_object = self.get_value_object()
+        if value_object and value_object.messages:
+            return value_object.messages[0]
+        return None
+    
     def get_first_message(self) -> Optional[Message]:
-        """Helper method para obtener el primer mensaje del payload"""
+        """
+        Helper method para obtener el primer mensaje del payload
+        Retorna:
+            Optional[Message]: Un objeto Message si el evento es un evento de mensaje, de lo contrario, None.        
+        """
         if self.is_message_event():
-            return self.entry[0].changes[0].value.messages[0]
+            message_data = self.entry[0]['changes'][0]['value']['messages'][0]
+            return Message(**message_data)
+        
         return None
 
     def is_message_event(self) -> bool:
         """Verifica si es un evento de mensaje"""
-        return bool(self.entry and 
-                   self.entry[0].changes and 
-                   self.entry[0].changes[0].value.messages)
+        if not self.entry:
+            return False
+        for entry in self.entry:
+            if 'changes' not in entry:
+                continue
+            for change in entry['changes']:
+                if 'value' not in change:
+                    continue
+                if 'messages' in change['value']:
+                    return True
+        return False
 
     def get_message_type(self) -> Optional[MessageType]:
         """
