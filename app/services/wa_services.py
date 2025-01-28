@@ -20,8 +20,7 @@ import httpx
 MENU_BUTTONS = [
     {"type": "reply", "reply": {"id": "pileta", "title": "Pileta"}},
     {"type": "reply", "reply": {"id": "tenis", "title": "Tenis"}},
-    {"type": "reply", "reply": {"id": "sum", "title": "SUM"}},
-    {"type": "reply", "reply": {"id": "residuos", "title": "Residuos"}},
+    {"type": "reply", "reply": {"id": "sum", "title": "SUM"}}
 ]
 
 logger = logging.getLogger(__name__)
@@ -112,6 +111,7 @@ class WhatsAppService:
         Returns:
             Dict: Respuesta de la API de WhatsApp Business.
         """
+        phone_number = self.re_format_number(phone_number)
         payload = {
             "messaging_product": "whatsapp",
             "to": phone_number,
@@ -137,6 +137,8 @@ async def handle_webhook_POST_logic(payload: WebhookPayload) -> dict:
     Returns:
         dict: Respuesta de estado.
     """
+    # Instanciar el servicio de WhatsApp
+    wa_service = WhatsAppService()
     
     # Validar el payload
     if payload.validate_payload() == { "success": True }:
@@ -159,15 +161,34 @@ async def handle_webhook_POST_logic(payload: WebhookPayload) -> dict:
                 for message in value['messages']:
                     from_number = message['from']
                     message_id = message['id']
-                    message_body = message['text']['body']
-                    
-                    # Procesar cada mensaje individualmente
-                    logger.info(f"  Mensaje recibido: - De (from_number): {from_number} - ID (message_id): {message_id} - Contenido (text:body): {message_body}")
+                    match message['type']:
+                        case 'text':                        
+                            message_body = message['text']['body']
+                            
+                            # Procesar cada mensaje individualmente
+                            logger.info(f"Mensaje tipo texto recibido: - ID: {message_id}  - De (from_number): {from_number}  - Contenido (text:body): {message_body}")
 
-                    # Responder al mensaje del remitente
-                    wa_service = WhatsAppService()
-                    response = await wa_service.send_text_message_to_user(from_number, "¡Gracias por tu mensaje!")
-                    logger.info(f"Respuesta enviada: {response}")
+                            # Responder al mensaje del remitente
+                            response1 = await wa_service.send_text_message_to_user(from_number, "Hola!")
+                            response2=  await wa_service.send_interactive_buttons(from_number, "Por favor, elije una opción:", MENU_BUTTONS)
+                            logger.info(f"Respuesta enviada: \n{response1}.\n{response2}")
+                        
+                        case 'interactive':
+                            interactive_type = message['interactive']['type']
+                            match interactive_type:
+                                case 'button_reply':
+                                    button_id = message['interactive']['button_reply']['id']
+                                    button_title = message['interactive']['button_reply']['title']
+                                    logger.info(f"Botón interactivo presionado: {button_id, button_title}")
+                                case 'list_reply':
+                                    button_id = message['interactive']['list_reply']['id']
+                                    button_title = message['interactive']['list_reply']['title']
+                                    logger.info(f"Botón interactivo presionado: {button_id, button_title}")                       
+                        case _: 
+                            logger.info(f"Mensaje no procesado: {message}")
+                            
+                            
+            # Verificar si hay estados
             if 'statuses' in value:
                 for status in value['statuses']:
                     message_id = status['id']
@@ -178,51 +199,3 @@ async def handle_webhook_POST_logic(payload: WebhookPayload) -> dict:
         "status": "success",
         "description": "Mensaje procesado exitosamente.",
     }
-
-
-
-def enviar_respuesta(usuario_id: str, mensaje: str, botones: list[Dict]):
-    """
-    Envía un mensaje con botones al usuario.
-    """
-    respuesta = {
-        "recipient_type": "individual",
-        "to": usuario_id,
-        "type": "interactive",
-        "interactive": {
-            "type": "button",
-            "body": {"text": mensaje},
-            "action": {"buttons": botones}
-        }
-    }
-    logger.info(f"Enviando respuesta: {json.dumps(respuesta, indent=2)}")
-
-
-def manejar_mensaje(payload: Dict):
-    """
-    Maneja un mensaje entrante, responde automáticamente y registra la interacción.
-    """
-    entry = payload.get("entry", [])
-    for item in entry:
-        changes = item.get("changes", [])
-        for change in changes:
-            mensajes = change.get("value", {}).get("messages", [])
-            for mensaje in mensajes:
-                usuario_id = mensaje.get("from")
-                texto = mensaje.get("text", {}).get("body")
-
-                # Responder al mensaje inicial
-                if texto:
-                    logger.info(f"Mensaje recibido de {usuario_id}: {texto}")
-
-                    # Enviar mensaje de bienvenida con menú
-                    enviar_respuesta(
-                        usuario_id,
-                        "Hola! Gracias por tu mensaje. Bienvenido! A continuación te paso un menú de temas sobre el cual puedes hacerme las consultas que intentaré responder con mucho gusto.",
-                        MENU_BUTTONS
-                    )
-
-                # Manejar selección del usuario (simulación de respuesta)
-                if mensaje.get("type") == "interactive" and "button_reply" in mensaje:
-                    seleccion = mensaje["button_reply"]["id"]
-                    logger.info(f"El usuario {usuario_id} seleccionó la opción: {seleccion}")
