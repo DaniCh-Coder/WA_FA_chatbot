@@ -1,10 +1,8 @@
 # wa_services.py
 """
-Este módulo contiene funciones para enviar mensajes de WhatsApp Business API.
-..........................................................................
-"""
-"""
-Este módulo contiene funciones para enviar mensajes de WhatsApp Business API utilizando fastapi y httpx.
+Este módulo contiene se encarga de manejar la API con WhatsApp.
+Contiene la lógica para enviar mensajes de texto y botones interactivos a través de la API de WhatsApp Business.
+Además, contiene la lógica para procesar solicitudes POST de webhook de WhatsApp Business API.
 """
 
 import logging
