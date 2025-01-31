@@ -14,11 +14,7 @@ def exception_handlers_setup(app: FastAPI):
     """
 
 
-    from app.exceptions.fastAPI_exceptions import FastAPIInitializationException
-    from app.exceptions.fastAPI_exceptions_handler import fastapi_initialization_exception_handler
     from app.exceptions.server_exceptions_setup import setup_generic_exceptions
-    from app.exceptions.ngrok_exceptions_setup import setup_ngrok_exceptions
-    from app.exceptions.fastAPI_exceptions_setup import setup_fastAPI_exceptions
     # from app.exceptions.webhook_exeptions_setup import setup_webhook_exceptions
 
     # Inicialización de excepciones 

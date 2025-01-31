@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, Request
+from fastapi import APIRouter, Request
 from starlette.responses import PlainTextResponse
 from app.schemas.webhook_schema import WebhookPayload, WebhookVerification
 from app.config_setup.config_settings import get_settings

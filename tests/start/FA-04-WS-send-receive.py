@@ -19,7 +19,6 @@ from fastapi.responses import PlainTextResponse     # PlainTextResponse class to
 import os                                           # os module to handle the environment variables
 import logging                                      # logging module to handle the logging of the application
 from dotenv import load_dotenv                      # load_dotenv function to load the environment variables from the .env file
-import requests                                     # requests module to handle HTTP requests
 import json                                         # json module to handle the JSON data
 
 # Configuración de logging

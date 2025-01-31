@@ -12,7 +12,6 @@ from fastapi import FastAPI
 from app.utils.fa_utils import configure_logging
 from app.utils.ngrok_utils import start_ngrok
 from app.routes.webhook_routes import router as webhook_router
-# from app.exceptions.exeptions_setup import exception_handlers_setup
 from app.config_setup.config_settings import get_settings
 
 
@@ -32,9 +31,6 @@ app = FastAPI(
     description="API para manejar interacciones con WhatsApp y Meta",
     version="1.0.0",
 )
-
-# Configuración de manejadores de excepciones
-#exception_handlers_setup(app)
 
 # Registrar las rutas
 app.include_router(webhook_router)
@@ -57,13 +53,9 @@ def start_application():
         raise  # Mantén este error para detener el flujo de la aplicación si ngrok no arranca.
 
 
-
-
-# Revisar path del proyecto antes de iniciar la aplicación si es necesario
-# de lo contrario dejar add_project_root_to_path() comentado.
-# add_project_root_to_path()
-
-
+#---------------------------------------------------------------------------------
+# Inicio de la aplicación
+#---------------------------------------------------------------------------------
 if __name__ == "__main__":
     
     # Iniciar la aplicación

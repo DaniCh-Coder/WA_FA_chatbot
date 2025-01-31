@@ -23,6 +23,7 @@ Los componentes del ecosistema de la aplicación resultante de este proyecto son
 ## Arquitectura
 La arquitectura de la aplicación se basa en el diagrama de componentes de la figura:
 ![Ecosistema](docs/images/ecosistema_chatbot.png)
+
 Y en consecuencia lo que hay que hacer es:
 1. Configurar todo el ecosistema
 2. Desarrollar e implementar la aplicación de los componentes dentro del circulo rojo.
@@ -50,8 +51,26 @@ Aquí, hay que configurar la API de WhatsApp Business. Para configurar la API de
 Siguiendo los pasos de la documentación oficial, asegura de tener los siguientes puntos, cumplidos para disponeer de una versión gratuita de prueba de aplicaciones.
 1. Crear una cuenta de desarrollador de Meta.
 2. Crear una app de negocios en el administrador de aplicaciones de Meta.
-3. Solicitar un número de teléfono de WhatsApp para empresas. Meta te provee uno si lo necesitas. Sino puedes usar un telefono de una empresa. Lo importante es que aquí estamos hablando del telefono de la empresa que va a responder los mensajes.
-4. Configurar tu número de teléfono de WhatsApp para pruebas. Puedes usar tu propio número de teléfono si lo deseas. Es posible habilitar hasta 5 numeros de telefonos para este propósito. Pero necesitas al menos un número de teléfono para enviar y recibir mensajes, como lo haría un usuario/cliente normal.
+3. Solicitar un número de teléfono de WhatsApp para empresas. Meta te provee uno si lo necesitas. Sino puedes usar un telefono de una empresa. 
+   1. Lo importante es que aquí estamos hablando del telefono de la empresa que va a responder los mensajes, de los usuarios/clientes.
+4. Configurar tu número de teléfono de WhatsApp para pruebas. Puedes usar tu propio número de teléfono si lo deseas. 
+   1. Es posible habilitar hasta 5 numeros de telefonos para este propósito. 
+   2. Es necesario al menos un número de teléfono para enviar y recibir mensajes, como lo haría un usuario/cliente normal.
+5. Generar el token de sguridad de Meta. 
+   1. Se trata de un token temporal en primera instancia. 
+   2. Luego se puede generar un token de producción. 
+      1. Para generar el token de producción, sigue los pasos que se indican en la [documentación oficial](https://developers.facebook.com/docs/whatsapp/getting-started/).
+6. Configurar el webhook de la API de WhatsApp Business. 
+   1. Para configurar el webhook de la API de WhatsApp Business, sigue los pasos que se indican en la [documentación oficial](https://developers.facebook.com/docs/whatsapp/getting-started/webhooks).
+   2. Para activar el webhook es necesaria una url del servidor de la aplicación. 
+      1. En este caso, se usará ngrok para exponer el servidor local a internet.
+      2. ngrok proveera la url del servidor de la aplicación.
+      3. Para configurar el webhook, se debe tener en cuenta que:
+      6. La url del servidor de la aplicación debe ser una url segura (https).
+      7. La url del servidor de la aplicación debe ser una url que responda a los requests de la API de WhatsApp Business en menos de 10 segundos.
+      8. La url del servidor de la aplicación debe ser una url que responda a los requests de la API de WhatsApp Business con un código de estado 200.
+   3. Para activar el webhook, también es preciso establecer un token de verificación.
+      1. El token de verificación es un token que se envía en cada request de la API de WhatsApp Business. Se trata de un token que define el desarrollador y que se establece como una de las variables de entorno de la aplicación.
    
 #### Configuración de servidor de la aplicación.
 ##### Requisitos
