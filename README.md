@@ -1,7 +1,9 @@
 # Bot de Whatssap en python
 WhatsApp bot in pure python
 
-Este proyecto tiene como objetivo enviar y recibir mensajes a traves de whatssap entre un proveedor y un cliente para responder saludarlo y responder consultas sobre temas determinados en base a la selección de un aopción en un menú.
+Este proyecto tiene el propósito de enviar y recibir mensajes a traves de whatssap entre un proveedor  y un cliente por whatssap.
+   - La apliación esta para responder consultas con un saludo y presentarle un menú sobre temas a profundizar en base a la selección de una opción en un menú.
+   - El objetivo de la aplicación y demás detalles del proyecto se explican a continuación.
 
 ## Ecosistema
 Los componentes del ecosistema de la aplicación resultante de este proyecto son los siguientes:
@@ -72,6 +74,46 @@ Siguiendo los pasos de la documentación oficial, asegura de tener los siguiente
    3. Para activar el webhook, también es preciso establecer un token de verificación.
       1. El token de verificación es un token que se envía en cada request de la API de WhatsApp Business. Se trata de un token que define el desarrollador y que se establece como una de las variables de entorno de la aplicación.
    
+##### Configuración del gateway para el servidor local
+###### Requisitos
+ Si no tienes un servidor publico con dominio propio, puedes usar ngrok para exponer tu servidor local a internet. Para ello, sigue los siguientes pasos:
+- Descarga ngrok desde la [página oficial](https://ngrok.com/).
+- Descomprime el archivo descargado.
+- Abre una terminal.
+- Navega hasta la carpeta donde se encuentra el archivo descomprim
+- Ejecuta el siguiente comando:
+```bash
+./ngrok http 8000
+```
+Este comando expone el servidor local en el puerto 5000 a internet. La salida del comando mostrará una url segura (https) que se puede usar para configurar el webhook de la API de WhatsApp Business.
+También puedes utilizar una url personalizada **"persistente"** con ngrok. Para ello, sigue los siguientes pasos:
+- Crea una cuenta en ngrok.
+- Inicia sesión en ngrok.
+- Ve a la sección de [tus túneles](https://dashboard.ngrok.com/endpoints/status).
+- Haz clic en el botón "Create a new tunnel".
+- Selecciona la región que prefieras.
+- Selecciona el protocolo que prefieras.
+- Selecciona el puerto que prefieras.
+- Haz clic en el botón "Create".
+- Copia la url segura (https) que se muestra en la sección de "Your new tunnel is ready".
+- Utiliza esta url segura (https) para configurar el webhook de la API de WhatsApp Business.
+- Para más información sobre cómo utilizar ngrok, consulta:
+  - [documentación oficial](https://ngrok.com/docs).
+  - cómo utilizar ngrok con FastAPI, consulta la [documentación oficial](https://fastapi.tiangolo.com/deployment/ngrok/).
+  - cómo utilizar ngrok con Uvicorn, consulta la [documentación oficial](https://www.uvicorn.org/deployment/#using-ngrok).
+  - cómo utilizar ngrok con ASGI, consulta la [documentación oficial](https://asgi.readthedocs.io/en/latest/).
+
+##### Configuración del cliente HTTP para Python 3
+###### Requisitos
+- Un cliente HTTP para Python 3. En este caso se usará httpx.
+- Un entorno virtual de Python. En este caso se usará venv.
+- Un editor de código. En este caso se usará Visual Studio Code.
+- Un sistema operativo compatible con Python 3. En este caso se usará Windows 10.
+- Un terminal de comandos. En este caso se usará PowerShell.
+- Un gestor de paquetes de Python. En este caso se usará pip.
+- Un gestor de entornos virtuales de Python. En este caso se usará venv.
+
+
 #### Configuración de servidor de la aplicación.
 ##### Requisitos
 - Un servidor para alojar la aplicación. Puede ser un servidor local o un servidor en la nube. En este caso se usará un servidor local.
@@ -82,3 +124,53 @@ Siguiendo los pasos de la documentación oficial, asegura de tener los siguiente
   - Una librería para la validación de datos en Python. En este caso se usará Pydantic.
 - Un entorno virtual de Python. En este caso se usará venv.
   - Un editor de código. En este caso se usará Visual Studio Code.
+  
+#### Guía rápida de configuración
+En internet he preparado un video (tutorial) que muestra cómo configurar el ecosistema de la aplicación. Puedes ver el video [aquí](https://www.youtube.com/watch?v=8QJj8J1J1Z4).
+
+# Entendiendo la Seguridad de Webhooks
+
+A continuación, se muestra información de la documentación de la API de Webhooks de Meta sobre verificación y seguridad. Ya está implementada en el código, pero puedes consultarla para comprender mejor lo que sucede en `security.py`.
+
+## Solicitudes de Verificación
+
+**Fuente**
+
+Cada vez que configuras el producto Webhooks en el Panel de control de tu aplicación, enviaremos una solicitud GET a la URL de tu endpoint. Las solicitudes de verificación incluyen los siguientes parámetros de cadena de consulta, agregados al final de la URL de tu endpoint. Se verán así:
+
+```
+https://your-webhook-url.com/webhook?hub.verify_token=your_verify_token&hub.challenge=your_challenge
+```
+también puede expresarse así:
+```
+GET https://www.your-clever-domain-name.com/webhook?
+hub.mode=subscribe&
+hub.challenge=1158201444&
+hub.verify_token=meatyhamhock
+```
+es decir, la información contenida es la siguiente:
+- `hub.verify_token`: El token de verificación que proporcionaste al configurar tu producto Webhooks.
+- `hub.challenge`: Un token aleatorio que tu aplicación debe responder con para completar el proceso de verificación.
+- `hub.mode`: El valor de este parámetro es siempre `subscribe`.
+- `hub.topic`: El valor de este parámetro es siempre `webhook`.
+- `hub.lease_seconds`: El valor de este parámetro es siempre `604800` (una semana).
+- `hub.callback_url`: La URL de tu endpoint.
+- `hub.secret`: El secreto de tu aplicación.
+
+
+## Aplicación
+### Objetivo
+Esta aplicación es un ejercicio de intereacción con un usuario de Whatsapp.
+La aplicación espera a que un usuario envia un mensaje. Cuando esto sucede, responde con:
+1. Un saludo: "Hola!".
+2. Inmediatamente le devuelve un mensaje: "Por favor elije una opción:" y un menú con tres opciones: "Pileta", Tenis", "SUM".
+Cada vez que el usuario elije una opción, el server informa por log la opción seleccionada.
+
+#### Escenario
+Se trata de un escenario hipotetico de un numero de Whatsapp asignado por un barrio cerrado para responder consulta sobre el reglamento y los procediminentos de uso de las instalacióndes del barrio (Pileta, canchas de cenis y salún de usos múltiples)
+
+### Presentación
+Si se instala desde el repositorio de github, se configuran los parámetros correspondientes, la aplicación funciona perfectamente y cumple con el objetivo planteado.
+
+#### Estructura
+

@@ -31,9 +31,9 @@ def validate_ngrok_config():
         NgrokException: Si las configuraciones de ngrok no son válidas.
     """
     if not ngr_command:
-        raise NgrokException("NGROK_COMMAND no puede estar vacío")
+        logger.error("NGROK_COMMAND no puede estar vacío")
     if ngrok_timeout <= 0:
-        raise NgrokException("NGROK_TIMEOUT debe ser un valor positivo")
+        logger.error("NGROK_TIMEOUT tiempo agotado. Debe ser mayor que cero.")
 
 def get_ngrok_tunnel():
     """
@@ -75,7 +75,7 @@ def wait_for_ngrok(timeout=ngrok_timeout):
         dict: Información del túnel si se encuentra, None si no se encuentra dentro del tiempo límite.
 
     Raises:
-        NgrokException: Si no se logra establecer un túnel en el tiempo límite.
+        Exception: Si no se logra establecer un túnel en el tiempo límite.
     """
     for i in range(1, timeout + 1):
         logger.info(f"Esperando... {i}/{timeout} segundos")
@@ -84,9 +84,9 @@ def wait_for_ngrok(timeout=ngrok_timeout):
             tunnel = get_ngrok_tunnel()
             if tunnel:
                 return tunnel
-        except NgrokException as e:
-            logger.warning(f"Intento fallido al obtener túnel: {e.detail}")
-    raise NgrokException("Tiempo de espera agotado para establecer un túnel ngrok.")
+        except Exception as e:
+            logger.warning(f"Intento fallido al obtener túnel: {e}")
+    raise ("Tiempo de espera agotado para establecer un túnel ngrok.")
 
 def start_ngrok_tunnel():
     """
@@ -157,7 +157,7 @@ def start_uvicorn(settings: Settings = get_settings()):
     """
     import uvicorn
     if not settings.UVICORN_APP:
-        raise NgrokException(detail="La configuración de UVICORN_APP no está definida.")
+        raise ("La configuración de UVICORN_APP no está definida.")
     logger.info("Iniciando el servidor FastAPI con Uvicorn...")
     uvicorn.run(settings.UVICORN_APP, host="0.0.0.0", port=5000, log_level="info", reload=False, lifespan="on")
     logger.info("uvicorn.run se ha ejecutado y finalizado correctamente.")
