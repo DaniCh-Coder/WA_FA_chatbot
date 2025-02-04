@@ -1,18 +1,6 @@
 """
 Este módulo contiene la configuración de la aplicación.
 Construye una clase con todas las variables de entorno necesarias y valida su debida existencia.
-..........................................................................
-├── main.py                # Define las rutas y controladores de la API
-├── services/
-│   ├── __init__.py        # Inicializa el paquete de servicios
-│   ├── whatsapp_service.py # Contiene la lógica relacionada con WhatsApp
-│   └── utils.py           # Funciones utilitarias genéricas
-├── schemas/
-│   ├── __init__.py        # Inicializa el paquete de esquemas
-│   ├── webhook.py         # Define esquemas de validación de entrada
-├── config/
-│   ├── __init__.py        # Inicializa el paquete de configuración
-│   └── settings.py        # Manejo de configuración de la aplicación
 """
 from pydantic_settings import BaseSettings   
 from pydantic import Field, ValidationError
@@ -49,9 +37,6 @@ class Settings(BaseSettings):
     # Path Configuration
     DOCS_PATH: str = Field(default="./docs", description="Ruta a los documentos de conocimiento")
     MODELS_PATH: str = Field(default="./models", description="Ruta a los modelos de lenguaje")
-    
-    # Uvicorn Configuration
-    UVICORN_APP: str = Field(..., description="Aplicación FastAPI para Uvicorn")
     
     class Config:
         model_config = {
@@ -105,5 +90,4 @@ if __name__ == "__main__":
     print(f"Application Configuration: {settings.APP_CONFIG}")
     print(f"Ngrok Configuration: {settings.NGROK_CONFIG}")
     print(f"Debug Configuration: {settings.DEBUG_CONFIG}")
-    print(f"Uvicorn Configuration: {settings.UVICORN_CONFIG}")
    

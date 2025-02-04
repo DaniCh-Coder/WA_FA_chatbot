@@ -11,6 +11,7 @@ from fastapi import HTTPException
 from app.config_setup.settings import settings
 from app.schemas.webhook_schema import WebhookPayload
 from app.config_setup.config_settings import get_settings
+from app.utils.utils import configure_logging
 from typing import Dict, Any
 import httpx
 
@@ -21,7 +22,7 @@ MENU_BUTTONS = [
     {"type": "reply", "reply": {"id": "sum", "title": "SUM"}}
 ]
 
-logger = logging.getLogger(__name__)
+logger = configure_logging(__name__)
 
 class WhatsAppService:
     def __init__(self):

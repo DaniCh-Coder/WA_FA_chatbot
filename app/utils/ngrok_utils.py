@@ -1,34 +1,32 @@
 '''
 ngrok_utils.py
 ngrok utilities: necessary functions to manage ngrok tunnels
-Author: @DanielChristello - 2024
+Author: @DanielChristello - @Chreinvent - 2025
 Version: 1.0
 Este es un módulo de funciones para el manejo de túneles con ngrok
 '''
-import logging
 import subprocess
 import httpx
 import time
-from app.config_setup.settings import Settings
 from app.config_setup.config_settings import get_settings
+from app.utils.utils import configure_logging
+
 
 # Configuración del logger
-logger = logging.getLogger(__name__)
+logger = configure_logging(__name__)
 
 # Configuraciones desde el archivo .env
 settings = get_settings()
 ngr_command = settings.NGROK_COMMAND
 ngrok_timeout = settings.NGROK_TIMEOUT
 
-# Configuración del logger
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 def validate_ngrok_config():
     """
     Valida las configuraciones de ngrok.
 
     Raises:
-        NgrokException: Si las configuraciones de ngrok no son válidas.
+        Ngrok Exception: Si las configuraciones de ngrok no son válidas.
     """
     if not ngr_command:
         logger.error("NGROK_COMMAND no puede estar vacío")
@@ -96,7 +94,7 @@ def start_ngrok_tunnel():
         bool: True si el comando se ejecuta correctamente.
 
     Raises:
-        NgrokException: Si ocurre un error al iniciar el túnel.
+        Ngrok Exception: Si ocurre un error al iniciar el túnel.
     """
     subprocess.run(["start", "cmd", "/k", ngr_command], shell=True, check=True)
     return True
@@ -145,19 +143,4 @@ def start_ngrok():
     tunnel = get_ngrok_tunnel()
     logger.info(result, tunnel)
 
-def start_uvicorn(settings: Settings = get_settings()):
-    """
-    Inicia el servidor UVICORN para FastAPI.
 
-    Args:
-        settings (Settings): Configuración de la aplicación.
-
-    Raises:
-        NgrokException: Si ocurre un error al iniciar el servidor.
-    """
-    import uvicorn
-    if not settings.UVICORN_APP:
-        raise ("La configuración de UVICORN_APP no está definida.")
-    logger.info("Iniciando el servidor FastAPI con Uvicorn...")
-    uvicorn.run(settings.UVICORN_APP, host="0.0.0.0", port=5000, log_level="info", reload=False, lifespan="on")
-    logger.info("uvicorn.run se ha ejecutado y finalizado correctamente.")

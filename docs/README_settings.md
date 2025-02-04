@@ -2,10 +2,8 @@
 # README: Configuración del archivo `settings.py`
 
 ## Introducción
-El archivo `settings.py` es una parte fundamental de este proyecto, ya que centraliza la configuración de variables de entorno requeridas para la ejecución correcta de la aplicación. La utilización de `pydantic.BaseSettings` proporciona un manejo más robusto y profesional de estas variables, mejorando la validación, claridad y compatibilidad con FastAPI.
-
-Este documento describe el contenido y la justificación de las decisiones de diseño adoptadas en el archivo `settings.py`.
-
+El archivo `settings.py` centraliza la configuración de variables de entorno requeridas para la ejecución correcta de la aplicación. 
+La utilización de `pydantic.BaseSettings` proporciona un manejo más robusto y profesional de estas variables, mejorando la validación, claridad y compatibilidad con FastAPI.
 ---
 
 ## Justificación del diseño

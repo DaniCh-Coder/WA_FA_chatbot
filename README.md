@@ -35,10 +35,10 @@ Y en consecuencia lo que hay que hacer es:
   - APIs. Qué son, cómo funcionan y cómo interactuar con ellas.
   - Herramientas de desarrollo de Meta: Qué es. Documentación. Blogs. Foros. Ejemplos. Etc.
   - Python. Cómo instalar paquetes, cómo ejecutar un script, cómo crear un entorno virtual, etc.
-  - HTTP. Qué es, cómo funciona y cómo interactuar con él.
-  - ASGI. Qué es, cómo funciona.
+  - HTTP. Qué es y cómo interactuar con él.
+  - ASGI. De que se trata.
   - FastAPI. Qué es, cómo funciona y porqué fastAPI.
-  - Pydantic. Qué es, cómo funciona y cómo interactuar con él.
+  - Pydantic. Qué es y cómo funciona.
 
 
 ### Configuración del ecosistema
@@ -125,18 +125,18 @@ También puedes utilizar una url personalizada **"persistente"** con ngrok. Para
 - Un entorno virtual de Python. En este caso se usará venv.
   - Un editor de código. En este caso se usará Visual Studio Code.
   
-#### Guía rápida de configuración
+## Guía rápida de configuración
 En internet he preparado un video (tutorial) que muestra cómo configurar el ecosistema de la aplicación. Puedes ver el video [aquí](https://www.youtube.com/watch?v=8QJj8J1J1Z4).
 
-# Entendiendo la Seguridad de Webhooks
+#### Entendiendo la Seguridad de Webhooks
 
-A continuación, se muestra información de la documentación de la API de Webhooks de Meta sobre verificación y seguridad. Ya está implementada en el código, pero puedes consultarla para comprender mejor lo que sucede en `security.py`.
+A continuación, se resume de la documentación de la API de Webhooks de Meta sobre verificación y seguridad
+[El detalle se puede contultar el la sección de documentos de Meta](https://developers.facebook.com/docs/graph-api/webhooks/getting-started)
 
-## Solicitudes de Verificación
+##### Solicitudes de Verificación
 
-**Fuente**
-
-Cada vez que configuras el producto Webhooks en el Panel de control de tu aplicación, enviaremos una solicitud GET a la URL de tu endpoint. Las solicitudes de verificación incluyen los siguientes parámetros de cadena de consulta, agregados al final de la URL de tu endpoint. Se verán así:
+Cada vez que se configura el producto Webhooks en el Panel de control de tu aplicación, se enviaremos una solicitud GET a la URL de tu endpoint. 
+Las solicitudes de verificación incluyen los siguientes parámetros de cadena de consulta, agregados al final de la URL de tu endpoint. Se verán así:
 
 ```
 https://your-webhook-url.com/webhook?hub.verify_token=your_verify_token&hub.challenge=your_challenge
@@ -157,6 +157,15 @@ es decir, la información contenida es la siguiente:
 - `hub.callback_url`: La URL de tu endpoint.
 - `hub.secret`: El secreto de tu aplicación.
 
+##### Payload
+Para ver la estructura del payload se resume en [un archivo de este proyecto](docs/WA_Payload_Notification.md) 
+WhatsApp firma todas las cargas útiles de las notificaciones de eventos con una firma SHA256 e incluye la firma en el encabezado X-Hub-Signature-256 de la solicitud, precedida por sha256=. No es necesario que valides la carga útil, pero deberías hacerlo.
+
+Para validar la carga útil:
+Genera una firma SHA256 usando la carga útil y el secreto de aplicación de tu aplicación.
+Compara tu firma con la firma en el encabezado X-Hub-Signature-256 (todo lo que esté después de sha256=). Si las firmas coinciden, la carga útil es genuina.
+
+
 
 ## Aplicación
 ### Objetivo
@@ -167,10 +176,63 @@ La aplicación espera a que un usuario envia un mensaje. Cuando esto sucede, res
 Cada vez que el usuario elije una opción, el server informa por log la opción seleccionada.
 
 #### Escenario
-Se trata de un escenario hipotetico de un numero de Whatsapp asignado por un barrio cerrado para responder consulta sobre el reglamento y los procediminentos de uso de las instalacióndes del barrio (Pileta, canchas de cenis y salún de usos múltiples)
+Se trata de un escenario hipotetico de un numero de Whatsapp asignado por un barrio cerrado para responder consulta sobre el reglamento y los procediminentos de uso de las instalacióndes de un club o un barrio cerrado. (Pileta, canchas de tenis y salún de usos múltiples)
 
 ### Presentación
 Si se instala desde el repositorio de github, se configuran los parámetros correspondientes, la aplicación funciona perfectamente y cumple con el objetivo planteado.
 
-#### Estructura
+#### Estructura y organización
+La estructura del proyecto se describe a continuación.
+* [app/](.\WA_FA_chatbot\app)
+  * [config_setup/](.\WA_FA_chatbot\app\config_setup)
+  * [routes/](.\WA_FA_chatbot\app\routes)
+  * [schemas/](.\WA_FA_chatbot\app\schemas)
+  * [services/](.\WA_FA_chatbot\app\services)
+  * [utils/](.\WA_FA_chatbot\app\utils)
+  * [__init__.py](.\WA_FA_chatbot\app\__init__.py)
+* [docs/](.\WA_FA_chatbot\docs)
+  * [images/](.\WA_FA_chatbot\docs\images)
+  * [Automatizacion-Whatssap.md](.\WA_FA_chatbot\docs\Automatizacion-Whatssap.md)
+  * [Markdown short guide.md](.\WA_FA_chatbot\docs\Markdown short guide.md)
+  * [README_env.md](.\WA_FA_chatbot\docs\README_env.md)
+  * [README_Estructura.md](.\WA_FA_chatbot\docs\README_Estructura.md)
+  * [README_main.md](.\WA_FA_chatbot\docs\README_main.md)
+  * [README_settings.md](.\WA_FA_chatbot\docs\README_settings.md)
+  * [README_wa_services.md](.\WA_FA_chatbot\docs\README_wa_services.md)
+  * [README_webhook.md](.\WA_FA_chatbot\docs\README_webhook.md)
+  * [WA_Payload_Notification.md](.\WA_FA_chatbot\docs\WA_Payload_Notification.md)
+* [tests/](.\WA_FA_chatbot\tests)
+  * [start/](.\WA_FA_chatbot\tests\start)
+  * [version_backup/](.\WA_FA_chatbot\tests\version_backup)
+* [.env](.\WA_FA_chatbot\.env)
+* [.gitignore](.\WA_FA_chatbot\.gitignore)
+* [main.py](.\WA_FA_chatbot\main.py)
+* [README.md](.\WA_FA_chatbot\README.md)
+* [requirements.txt](.\WA_FA_chatbot\requirements.txt)
+* [__init__.py](.\WA_FA_chatbot\__init__.py)
+
+Y eta organización se explica en:
+* [README_Estructura.md](.\WA_FA_chatbot\docs\README_Estructura.md)
+
+#### Configuración de la app
+Por favor configurar el archivo de entorno ".env" en el directorio raíz del proyecto con las variables que la aplicación necesita.
+Las variables que la aplicación necesita están explicasdas en el archivo: [README_env.md](.\WA_FA_chatbot\docs\README_env.md)
+
+##### Utilización de la api de Meta
+Se recomienda, utilizar documentación de Meta para aprender [como desarrollar una app y comenzar a enviar y recibir mensajes.](https://developers.facebook.com/docs/whatsapp/cloud-api).
+
+### Módulos de la app
+El archivo `main.py` es el punto de entrada de la aplicación FastAPI para el chatbot de WhatsApp. 
+- Configura el logger, carga la configuración, registra las rutas y maneja excepciones. 
+- Además, inicia un túnel ngrok para exponer el servidor local a internet y ejecuta el servidor Uvicorn. 
+- Si hay errores críticos en el arranque, se registran y detienen la aplicación para garantizar estabilidad.
+Una descripción más detallada puede encontrarse en el [readme correspondiente](.\WA_FA_chatbot\docs\README_main.md).
+
+Para el resto de los módulos la documentación está contenida en el directorio docs.
+- Cada módulo tiene un README corrrespondiente.
+- El archivo README_Estructura.md puede verse el listado de los READMEs de documentación.
+
+
+
+
 

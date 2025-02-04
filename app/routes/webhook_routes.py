@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Request
 from starlette.responses import PlainTextResponse
 from app.schemas.webhook_schema import WebhookPayload, WebhookVerification
+from app.utils.utils import configure_logging
 from app.config_setup.config_settings import get_settings
 from app.services.wa_services import WhatsAppService, handle_webhook_POST_logic
 
-import logging
 
 # Configurar el logger
-logger = logging.getLogger(__name__)
+logger = configure_logging(__name__)
 
 router = APIRouter()
 whatsapp_service = WhatsAppService()
@@ -40,7 +40,7 @@ async def verify_webhook(request: Request):
 
     if missing_params:
         logger.error(f"Parámetros faltantes: {missing_params}")
-        # raise MissingParametersException(missing_params=list(missing_params))
+        raise ("Error en los parametros de verificación")
 
     # Validar los parámetros usando el modelo Pydantic
     verification = WebhookVerification(**params)
@@ -54,9 +54,6 @@ async def verify_webhook(request: Request):
     if verification.verify_token == settings.VERIFY_TOKEN:
         logger.info("Webhook verificado exitosamente.")
         return PlainTextResponse(content=verification.challenge, status_code=200)
-
-    # Lanzar excepción si el token no es válido
-    # raise InvalidTokenException(provided_token=verification.verify_token, expected_token=settings.VERIFY_TOKEN)
 
 
 @router.post("/webhook", tags=["Webhook"])
