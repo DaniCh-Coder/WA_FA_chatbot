@@ -81,18 +81,6 @@ Los flujos de interacción permiten diseñar experiencias guiadas para los usuar
 2. **Registrando el negocio:**
    - Acceso a todas las funcionalidades avanzadas de la API.
    - Mejora la confianza y calidad percibida por los clientes.
-
-**Cuadro Comparativo:**
-
-| Característica                    | WhatsApp Business App         | API de WhatsApp Business         |
-|----------------------------------|-------------------------------|----------------------------------|
-| Mensajes de bienvenida           | Sí                            | Sí                               |
-| Menús interactivos               | No                            | Sí                               |
-| Respuestas automáticas avanzadas | No                          | Sí                               |
-| Flujos personalizados            | No                            | Sí                               |
-| Uso sin registro empresarial     | No                            | Sí (limitado con proveedores)    |
-| Uso con registro empresarial     | No                            | Sí (acceso completo)             |
-
 ---
 
 #### **4. Opciones para desarrollador freelance**
@@ -165,30 +153,6 @@ Para utilizar la API de WhatsApp Business, es necesario cumplir con una serie de
 | **Verificación de empresa**   | No             | Recomendado              |
 | **Cuenta de Facebook Business** | No             | Sí                       |
 | **Calidad de mensajes**       | No monitoreada | Críticamente monitoreada |
-
----
-
-## **Profundización en los Requisitos Clave**
-
-### 1. **Cuenta de Facebook Business Manager**
-   - Proporciona acceso centralizado para configurar la API.
-   - Permite a las empresas gestionar usuarios, permisos y facturación.
-
-### 2. **Número de Teléfono Verificado**
-   - WhatsApp exige que el número se asocie exclusivamente a la API.
-   - El proceso de verificación incluye recibir un código de confirmación a través de SMS o llamada.
-
-### 3. **Verificación de la Empresa**
-   - Registrarse como empresa verificada proporciona confianza a los clientes y mejora la visibilidad del perfil comercial.
-   - Los proveedores como Twilio permiten que los freelancers configuren la API sin necesidad de tener una empresa formal registrada.
-
-### 4. **Cumplimiento de las Políticas de WhatsApp y Meta**
-   - Las políticas incluyen restricciones sobre el contenido permitido en los mensajes, como evitar promociones invasivas.
-   - Se requiere un claro consentimiento para enviar notificaciones proactivas, como confirmaciones de pedidos.
-
-### 5. **Mantenimiento de Mensajes de Alta Calidad**
-   - La calificación de calidad determina cuántos mensajes puedes enviar proactivamente.
-   - Los reportes por spam o una baja tasa de respuesta pueden llevar a limitaciones temporales o permanentes.
 
 ---
 

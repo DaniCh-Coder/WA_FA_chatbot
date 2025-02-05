@@ -31,7 +31,10 @@ Y en consecuencia lo que hay que hacer es:
 2. Desarrollar e implementar la aplicación de los componentes dentro del circulo rojo.
 
 ##### Prerequisitos
-- Conocimientos básicos de:
+Por tratarse de una app de automatización con Whatssap, por favor lea el documento:
+  - [Automatzación con Whatssap](docs/Automatizacion-Whatssap.md).
+  
+- Resulta conveniente tener conocimientos básicos de:
   - APIs. Qué son, cómo funcionan y cómo interactuar con ellas.
   - Herramientas de desarrollo de Meta: Qué es. Documentación. Blogs. Foros. Ejemplos. Etc.
   - Python. Cómo instalar paquetes, cómo ejecutar un script, cómo crear un entorno virtual, etc.
