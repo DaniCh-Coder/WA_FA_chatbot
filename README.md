@@ -224,17 +224,23 @@ Las variables que la aplicación necesita están explicasdas en el archivo: [REA
 ##### Utilización de la api de Meta
 Se recomienda, utilizar documentación de Meta para aprender [como desarrollar una app y comenzar a enviar y recibir mensajes.](https://developers.facebook.com/docs/whatsapp/cloud-api).
 
-### Módulos de la app
+### Módulos de la app a destacar
 El archivo `main.py` es el punto de entrada de la aplicación FastAPI para el chatbot de WhatsApp. 
 - Configura el logger, carga la configuración, registra las rutas y maneja excepciones. 
 - Además, inicia un túnel ngrok para exponer el servidor local a internet y ejecuta el servidor Uvicorn. 
 - Si hay errores críticos en el arranque, se registran y detienen la aplicación para garantizar estabilidad.
 Una descripción más detallada puede encontrarse en el [readme correspondiente](.\WA_FA_chatbot\docs\README_main.md).
 
-Para el resto de los módulos la documentación está contenida en el directorio docs.
+El archivo `webhook_routes.py` es el que maneja las rutas del server y por lo tanto supervisa la comunicación entre usuarios con la empresa a traves de meta.
+- Posee una estructura muy simple.
+- Deriva la logica del tratamiento de los POST que recibe de Meta a oto módulo para mantener la limipieza y el órden en la codificación.
+Una descripción más detallada puede encontrarse en el [readme correspondiente](.\WA_FA_chatbot\docs\README_webhook_routes.md).
+
+
+
+Para todoslos módulos la documentación está contenida en el directorio docs.
 - Cada módulo tiene un README corrrespondiente.
 - El archivo README_Estructura.md puede verse el listado de los READMEs de documentación.
-
 
 
 

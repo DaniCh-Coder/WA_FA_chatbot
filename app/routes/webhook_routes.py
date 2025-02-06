@@ -48,7 +48,7 @@ async def verify_webhook(request: Request):
     # Validar que el modo sea el esperado
     if verification.mode != "subscribe":
         logger.error(f"Modo no válido: {verification.mode}")
-        # raise InvalidModeException(provided_mode=verification.mode, expected_mode="subscribe")
+        raise ("Error en los parametros de verificación")
 
     # Validar el token
     if verification.verify_token == settings.VERIFY_TOKEN:
