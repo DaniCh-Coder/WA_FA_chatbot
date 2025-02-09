@@ -5,11 +5,12 @@
   + a.1 ACCESS_TOKEN: token de identificación de Meta provisto por el panel de configuración de API de Whatssap (Panel de apps)
   + a.2 PHONE_NUMBER_ID: numero de identificación de whatsapp provisto por Meta + en el panel de configuración de API de Whatssap (Panel de apps)
   + a.3 APP_ID: numero de identificación de la app que estoy desarrollando provisto por Meta en el panel de configuración de API de Whatssap (Panel de apps)
-  + a.4 RECIPIENT_WAID_#: numero de whatsapp de un contacto al que se le enviaran mensajes
-  + a.5 RECIPIENT_ITEM_#: numero de identificación de un contacto al que se le enviaran mensajes
+  + a.4 RECIPIENT_WAID_#: numero de teléfono con whatsapp (wa_id) de un contacto al que se le enviaran mensajes. (Número de usuario o cliente)
+  + a.5 RECIPIENT_ITEM_#: numero de teléfono con whatsapp (from_) de un contacto al que se le enviaran mensajes. (Número de usuairo o cliente)
+  + a.6 El número de RECIPIENT_WAID y RECIPIENT_ITEM es el mismo solo que puede que tenga distinto formato fuera de USA.
 
 ### b. Datos del panel de configuración Meta para cargar en el server (FastAPI):
-+ b1. META_API_VER=v21.0  Lo informa meta en el panel de la app.
++ b1. META_API_VER=v22.0  Lo informa meta en el panel de la app.
 + b2. META_URL=https://graph.facebook.com Es la url de la API de meta
   
 ### c. Datos propios del servidor de la app (FastAPI) en este caso para cargar en Meta

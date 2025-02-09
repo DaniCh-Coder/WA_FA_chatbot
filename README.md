@@ -131,6 +131,16 @@ También puedes utilizar una url personalizada **"persistente"** con ngrok. Para
 ## Guía rápida de configuración
 En internet he preparado un video (tutorial) que muestra cómo configurar el ecosistema de la aplicación. Puedes ver el video [aquí](https://www.youtube.com/watch?v=8QJj8J1J1Z4).
 
+### Entorno
+El entorno se configura en un archivo `.env` 
+Como es usual el archivo de entorno no se comparte porque:
+- Es sensible a cuestiones de seguridad.
+- Depende del entorno de desarrollo de quién instale y utilice este código.
+
+Una vez que instale el código construya su entorno en un archivo y nombrelo `.env` en el directorio raiz de app.
+- Este archivo de entorno debe quedar configurado y guardado en el mismo directorio que `main.py`.
+- Para configurar este archivos las instrucciones estan el archivo [README_env.md](./docs/README_env.md) en la carpeta docs.
+
 #### Entendiendo la Seguridad de Webhooks
 
 A continuación, se resume de la documentación de la API de Webhooks de Meta sobre verificación y seguridad
