@@ -139,8 +139,4 @@ def start_ngrok():
     Raises:
         NgrokException: Si ocurre algún problema al iniciar o verificar el túnel.
     """
-    result = test_ngrok_tunnel()
-    tunnel = get_ngrok_tunnel()
-    logger.info(result, tunnel)
-
-
+    test_ngrok_tunnel()
